@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace QuizMaster
 {
+    /// <summary>
+    /// Class containing the logic to retrieve the next quiz question, with answer options, and determine score based 
+    /// on chosen answers.
+    /// Assumes that every question has 4 answer alternatives.
+    /// </summary>
     internal class Quiz
     {
         // columns: question, alternative 1, aternative 2, alternative 3, alternative 4, correct answer
