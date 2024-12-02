@@ -40,7 +40,7 @@ namespace QuizMaster
         /// Returns question and the four answer alternatives associated to index <paramref name="questionId"/>.
         /// If no questions are left in the quiz, all variables have value <c>null</c>.
         /// </summary>
-        public (string q, List<string> answerAlternatives) GetNextQuestion()
+        public (string question, List<string> answerAlternatives) GetNextQuestion()
         {
             currentQuestionId++;
 

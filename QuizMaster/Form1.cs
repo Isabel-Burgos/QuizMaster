@@ -22,7 +22,7 @@ namespace QuizMaster
         private void StartButton_Click(object sender, EventArgs e)
         {
             //** create quiz interface: **//
-            // first remove start key
+            // first remove start button
             this.Controls.RemoveByKey("startQuiz");
             // then change textbox to be ready to load question
             title.Location = new Point(150, 100);
@@ -54,7 +54,8 @@ namespace QuizMaster
 
         /// <summary>
         /// Event handler that handles click on "next" button. Sends value of field
-        /// <c>tempUserAnswer</c> to class <c>Quiz</c> as answer to current question
+        /// <c>tempUserAnswer</c> to class <c>Quiz</c> as answer to current question. Then
+        /// loads next page in the game.
         /// </summary>
         private void Next_Click(Object sender, EventArgs e)
         {
@@ -102,12 +103,14 @@ namespace QuizMaster
             // First checks if there are any questions left. If not it loads final page
             if (q == null)
             {
+                // remove arbitrary buttons
                 foreach (string buttonName in altButtonNames)
                 {
                     this.Controls.RemoveByKey(buttonName);
                 }
                 this.Controls.RemoveByKey("next");
 
+                // add relevant text
                 title.Text = "Congratulations, you completed the quiz!";
                 title.Font = new Font("Microsoft Sans Serif", 24);
                 Label score = new Label();
@@ -125,6 +128,7 @@ namespace QuizMaster
             // Otherwise it loads the next quiz question with alternatives
             else
             {
+                // update relevant label and button texts
                 title.Text = q;
                 for (int i = 0; i < altButtonNames.Length; i++)
                 {
