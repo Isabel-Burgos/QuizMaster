@@ -17,8 +17,8 @@ namespace QuizMaster
             { "Hvem er kjent som dronningen av krim?", "Anne Holt", "Erlend Loe", "Agatha Christie", "Isabel Allende", "Agatha Christie" },
             { "Hva er hovedstaden i Australia?", "Sydney", "Canberra", "Melbourne", "Perth", "Canberra" },
             { "Hvor mange bein har en sommerfugl?", "6", "8", "5", "4", "6" },
-            { "Hvilket land har verdens lengste kystlinje?", "Russland", "Canada", "Grønland", "Norge", "Norge" },
-            { "Hva er den mest nordliggende hovedstaden i verden?", "Oslo", "Nuuk", "Reykjavik", "Helsinki", "Nuuk" },
+            { "Hvilket land har verdens lengste kystlinje?", "Russland", "Canada", "Grønland", "Norge", "Canada" },
+            { "Hva er den mest nordliggende hovedstaden i verden?", "Oslo", "Nuuk", "Reykjavik", "Helsinki", "Reykjavik" },
             { "Hvem vant Norske Talenter 2024?", "Quick Style", "Michael John", "Jump Crew", "Julie Bergan", "Jump Crew"}
         };
 
