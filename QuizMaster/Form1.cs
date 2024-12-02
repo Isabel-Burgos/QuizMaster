@@ -48,8 +48,7 @@ namespace QuizMaster
         private void Answer_Click(Object sender, EventArgs e)
         {
             // check which button sent the event
-            Button buttonClicked = (Button)sender;
-            tempUserAnswer = buttonClicked.Text;
+            tempUserAnswer = ((Button)sender).Text;
         }
 
         /// <summary>
