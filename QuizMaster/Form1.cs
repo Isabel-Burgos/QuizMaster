@@ -56,7 +56,7 @@ namespace QuizMaster
         {
             // TODO: give message if the question was not answered by the user?
             quiz.SaveAnswer(tempUserAnswer);
-
+            tempUserAnswer = "";
             // load next page
             LoadNextQuizPage();
         }
