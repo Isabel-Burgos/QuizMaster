@@ -12,34 +12,20 @@ namespace QuizMaster
 {
     public partial class Form1 : Form
     {
-        string[] questions = { 
-            "What is the highest mountain in the world?",
-            "Who was the first Presient of USA?",
-            "Which country has the longest coastline in the world?",
-            "Who is known as the queen of crime?",
-            "What is the capital of Australia?",
-            "What animal's milk is pink?",
-            "What is the northernmost capital city in the World?",
-            "Who is known as the father of modern Physics?"
-            };
-
-        int questionsAnswered = 0;
-        int questionsCorrect = 0;
+        Quiz quiz = new Quiz();
+        string userAnswer = ""; // TODO: move to quiz class
 
         public Form1()
         {
             InitializeComponent();
         }
 
-
         /// <summary>
         /// Event handler for when button "Start Game" is pressed by the user
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void start_button_Click(object sender, EventArgs e)
+        private void StartButton_Click(object sender, EventArgs e)
         {
-            /* create quiz interface: */
+            //** create quiz interface: **//
             // first remove start key
             this.Controls.RemoveByKey("startQuiz");
             // then change text
@@ -47,48 +33,46 @@ namespace QuizMaster
             label1.Font = new Font("Microsoft Sans Serif", 20);
 
             // create buttons for quiz
-            addQuizButton("option1", new Point(150, 200));
-            addQuizButton("option2", new Point(450, 200));
-            addQuizButton("option3", new Point(150, 300));
-            addQuizButton("option4", new Point(450, 300));
-            addQuizButton("Next", new Point(500,400)); // TODO: add another handler to this button?
+            AddQuizButton("option1", new Point(150, 200), Answer_Click);
+            AddQuizButton("option2", new Point(450, 200), Answer_Click);
+            AddQuizButton("option3", new Point(150, 300), Answer_Click);
+            AddQuizButton("option4", new Point(450, 300), Answer_Click);
+            AddQuizButton("next", new Point(500,400), Next_Click);
 
-            loadQuestionPage(questionsAnswered);
+            // fill quiz with first question
+            LoadNextQuizPage();
         }
 
         /// <summary>
-        /// Event handler that handles click on all answer options
+        /// Event handler that handles button-click on all answer options
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void answer_Click(Object sender, EventArgs e)
+        private void Answer_Click(Object sender, EventArgs e)
         {
-            // check which object sent the event
-            var senderObject = (Button)sender;
-            string buttonTag = senderObject.Text;
-            Console.WriteLine(buttonTag); // temporary to check that it works
-
-            // TODO: make button that was clicked blue to show the user?
+            // check which button sent the event
+            Button buttonClicked = (Button)sender;
+            userAnswer = buttonClicked.Text;
         }
 
         /// <summary>
-        /// Updates the app form to show the question at index <paramref name="qIndex"/>
+        /// Event handler that handles click on "next" button
         /// </summary>
-        /// <param name="qIndex"></param>
-        private void loadQuestionPage(int qIndex)
+        private void Next_Click(Object sender, EventArgs e)
         {
-            label1.Text = questions[qIndex];
-            // TODO: load answer options
+            // TODO: account for if the question was not answered by the user
+
+            quiz.SaveAnswer(userAnswer);
+
+            // load next page
+            LoadNextQuizPage();
         }
 
         /// <summary>
         /// Creates a button, <c>b</c>, with <c>b.name</c> and <c>b.text</c> defined by 
-        /// <paramref name="buttonName"/>, and location on app defined by <paramref name="location"/>.
-        /// Then adds button to app form
+        /// <paramref name="buttonName"/>, location on app defined by <paramref name="location"/>,
+        /// and <paramref name="eventHandler"/> as <c>EventHandler</c>.
+        /// Then adds button to app form.
         /// </summary>
-        /// <param name="buttonName"></param>
-        /// <param name="location"></param>
-        private void addQuizButton(string buttonName, Point location)
+        private void AddQuizButton(string buttonName, Point location, EventHandler eventHandler)
         {
             Button b = new Button();
             b.Location = location;
@@ -96,8 +80,44 @@ namespace QuizMaster
             b.Text = buttonName;
             b.Size = new Size(250, 65); // TODO: Make button size fit text
             b.Font = new Font("Microsoft Sans Serif", 14);
-            b.Click += answer_Click;
+            b.Click += eventHandler;
             this.Controls.Add(b);
+        }
+
+        private void LoadNextQuizPage()
+        {
+            (string q, string a1, string a2, string a3, string a4) = quiz.GetNextQuestion();
+            if (q == null)
+            {
+                // load final page
+                this.Controls.RemoveByKey("option1");
+                this.Controls.RemoveByKey("option2");
+                this.Controls.RemoveByKey("option3");
+                this.Controls.RemoveByKey("option4");
+                this.Controls.RemoveByKey("next");
+
+                label1.Text = "Congratulations, you completed the quiz!";
+                Label score = new Label();
+                score.Location = new Point(150, 200);
+                score.Font = new Font("Microsoft Sans Serif", 14);
+                score.Text = $"Your score is:\n{quiz.GetScore()}/{quiz.GetNmbQuestions()}";
+                score.AutoSize = true;
+                this.Controls.Add(score);
+
+                // TODO: add "close" and/or "replay" button
+            }
+            else
+            {
+                label1.Text = q;
+                Button op1 = (Button)this.Controls["option1"];
+                op1.Text = a1;
+                Button op2 = (Button)this.Controls["option2"];
+                op2.Text = a2;
+                Button op3 = (Button)this.Controls["option3"];
+                op3.Text = a3;
+                Button op4 = (Button)this.Controls["option4"];
+                op4.Text = a4;
+            }
         }
     }
 }

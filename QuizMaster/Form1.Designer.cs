@@ -44,7 +44,7 @@
             this.startQuiz.Text = "Start quiz";
             this.startQuiz.UseVisualStyleBackColor = true;
             this.startQuiz.UseWaitCursor = true;
-            this.startQuiz.Click += new System.EventHandler(this.start_button_Click);
+            this.startQuiz.Click += new System.EventHandler(this.StartButton_Click);
             // 
             // label1
             // 
