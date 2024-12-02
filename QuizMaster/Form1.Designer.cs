@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.startQuiz = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
+            this.title = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // startQuiz
@@ -48,20 +48,20 @@
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(328, 205);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(723, 69);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Welcome to Quiz Master!";
+            this.title.AutoSize = true;
+            this.title.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.title.Location = new System.Drawing.Point(328, 205);
+            this.title.Name = "label1";
+            this.title.Size = new System.Drawing.Size(723, 69);
+            this.title.TabIndex = 2;
+            this.title.Text = "Welcome to Quiz Master!";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1347, 799);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.title);
             this.Controls.Add(this.startQuiz);
             this.Name = "Form1";
             this.Text = "Quiz Master";
@@ -74,7 +74,7 @@
 
         private System.Windows.Forms.Button startQuiz;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label title;
     }
 }
 

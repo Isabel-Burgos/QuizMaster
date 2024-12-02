@@ -15,6 +15,7 @@ namespace QuizMaster
             { "Hvem var den første kongen i Norge?", "Harald Hårfagre", "Kong Carl Johan", "Kong Haakon VII", "Kong Harald V", "Harald Hårfagre" },
             { "Hvem er kjent som dronningen av krim?", "Anne Holt", "Erlend Loe", "Agatha Christie", "Isabel Allende", "Agatha Christie" },
             { "Hva er hovedstaden i Australia?", "Sydney", "Canberra", "Melbourne", "Perth", "Canberra" },
+            { "Hvor mange bein har en sommerfugl?", "6", "8", "5", "4", "6" },
             { "Hvilket land har verdens lengste kystlinje?", "Russland", "Canada", "Grønland", "Norge", "Norge" },
             { "Hva er den mest nordliggende hovedstaden i verden?", "Oslo", "Nuuk", "Reykjavik", "Helsinki", "Nuuk" },
             { "Hvem vant Norske Talenter 2024?", "Quick Style", "Michael John", "Jump Crew", "Julie Bergan", "Jump Crew"}
@@ -28,6 +29,8 @@ namespace QuizMaster
             // asserting that there has to be 6 columns in the quiz matrix for logic to work
             if (quiz.GetLength(1) != 6)
             {
+                // Note: actually strange to use ArgumentException here because the function has no argument,
+                // but I couln't find a better fitting exception
                 throw new ArgumentException($"Matrix '{nameof(quiz)}' does not have 6 columns, as required");
             }
         }
@@ -49,9 +52,12 @@ namespace QuizMaster
             return (quiz[currentQuestionId, 0], quiz[currentQuestionId, 1], quiz[currentQuestionId, 2], quiz[currentQuestionId, 3], quiz[currentQuestionId, 4]);
         }
 
+        /// <summary>
+        /// Saves <paramref name="userAnswer"/> in register of user answers at index of question.
+        /// </summary>
         public void SaveAnswer(string userAnswer)
         {
-            // if statement checks if the answer should be added to the list since the question has not
+            // if-statement checks if the answer should be added to the list since the question has not
             // previously been answered, or if the answer should be updated.
             // In the case that the index (i.e., Id) is not consistent with list size, an error is thrown.
             if (userAnswers.Count == 0 || currentQuestionId == userAnswers.Count)
@@ -69,9 +75,9 @@ namespace QuizMaster
         }
 
         /// <summary>
-        /// Calculates the total score by comparing answers from user to correct answer.
+        /// Calculates the total score by comparing all answers given by the user to the correct answers.
         /// </summary>
-        /// <returns>Score as an int</returns>
+        /// <returns>int: current score</returns>
         public int GetScore()
         {
             int score = 0;
@@ -82,6 +88,10 @@ namespace QuizMaster
             return score;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>int: Number of questions in quiz</returns>
         public int GetNmbQuestions()
         {
             return quiz.GetLength(0);

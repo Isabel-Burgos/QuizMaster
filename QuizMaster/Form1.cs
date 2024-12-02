@@ -13,7 +13,7 @@ namespace QuizMaster
     public partial class Form1 : Form
     {
         Quiz quiz = new Quiz();
-        string userAnswer = ""; // TODO: move to quiz class
+        string tempUserAnswer = ""; // TODO: move to quiz class?
 
         public Form1()
         {
@@ -28,9 +28,9 @@ namespace QuizMaster
             //** create quiz interface: **//
             // first remove start key
             this.Controls.RemoveByKey("startQuiz");
-            // then change text
-            label1.Location = new Point(150, 100);
-            label1.Font = new Font("Microsoft Sans Serif", 20);
+            // then change textbox to be ready to load question
+            title.Location = new Point(150, 100);
+            title.Font = new Font("Microsoft Sans Serif", 20);
 
             // create buttons for quiz
             AddQuizButton("option1", new Point(150, 200), Answer_Click);
@@ -44,26 +44,35 @@ namespace QuizMaster
         }
 
         /// <summary>
-        /// Event handler that handles button-click on all answer options
+        /// Event handler that handles button-click on all answer options. Updates field
+        /// <c>tempUserAnswer</c> every time one of the options is clicked
         /// </summary>
         private void Answer_Click(Object sender, EventArgs e)
         {
             // check which button sent the event
             Button buttonClicked = (Button)sender;
-            userAnswer = buttonClicked.Text;
+            tempUserAnswer = buttonClicked.Text;
         }
 
         /// <summary>
-        /// Event handler that handles click on "next" button
+        /// Event handler that handles click on "next" button. Sends value of field
+        /// <c>tempUserAnswer</c> to class <c>Quiz</c> as answer to current question
         /// </summary>
         private void Next_Click(Object sender, EventArgs e)
         {
-            // TODO: account for if the question was not answered by the user
-
-            quiz.SaveAnswer(userAnswer);
+            // TODO: give message if the question was not answered by the user?
+            quiz.SaveAnswer(tempUserAnswer);
 
             // load next page
             LoadNextQuizPage();
+        }
+
+        /// <summary>
+        /// Event handler that handles when "close" button is pressed
+        /// </summary>
+        private void Close_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         /// <summary>
@@ -78,12 +87,16 @@ namespace QuizMaster
             b.Location = location;
             b.Name = buttonName;
             b.Text = buttonName;
-            b.Size = new Size(250, 65); // TODO: Make button size fit text
+            b.Size = new Size(250, 65);
             b.Font = new Font("Microsoft Sans Serif", 14);
             b.Click += eventHandler;
             this.Controls.Add(b);
         }
 
+        /// <summary>
+        /// Fills textbox and buttons with values for the next question, unless all questions
+        /// have already been answered. In the latter case, the final page is loaded.
+        /// </summary>
         private void LoadNextQuizPage()
         {
             (string q, string a1, string a2, string a3, string a4) = quiz.GetNextQuestion();
@@ -96,19 +109,23 @@ namespace QuizMaster
                 this.Controls.RemoveByKey("option4");
                 this.Controls.RemoveByKey("next");
 
-                label1.Text = "Congratulations, you completed the quiz!";
+                title.Text = "Congratulations, you completed the quiz!";
+                title.Font = new Font("Microsoft Sans Serif", 24);
                 Label score = new Label();
                 score.Location = new Point(150, 200);
-                score.Font = new Font("Microsoft Sans Serif", 14);
+                score.Font = new Font("Microsoft Sans Serif", 18);
                 score.Text = $"Your score is:\n{quiz.GetScore()}/{quiz.GetNmbQuestions()}";
                 score.AutoSize = true;
                 this.Controls.Add(score);
 
-                // TODO: add "close" and/or "replay" button
+                // Add "close" button so user can end game
+                AddQuizButton("close", new Point(500, 400), Close_Click);
+
+                // TODO: add "replay" button?
             }
             else
             {
-                label1.Text = q;
+                title.Text = q;
                 Button op1 = (Button)this.Controls["option1"];
                 op1.Text = a1;
                 Button op2 = (Button)this.Controls["option2"];
