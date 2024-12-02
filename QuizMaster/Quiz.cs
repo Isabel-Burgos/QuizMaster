@@ -10,7 +10,7 @@ namespace QuizMaster
     /// </summary>
     internal class Quiz
     {
-        // columns: question, alternative 1, aternative 2, alternative 3, alternative 4, correct answer
+        // columns: question, alternative 1, aternative 2, alternative 3, alternative 4, correct answer     
         private string[,] quiz = {
             { "Hva er verdens høyeste fjell?", "Galdhøpiggen", "Mount Everest", "Mount Kilimanjaro", "Mount Neverest", "Mount Everest" },
             { "Hvem var den første kongen i Norge?", "Harald Hårfagre", "Kong Carl Johan", "Kong Haakon VII", "Kong Harald V", "Harald Hårfagre" },
@@ -40,17 +40,16 @@ namespace QuizMaster
         /// Returns question and the four answer alternatives associated to index <paramref name="questionId"/>.
         /// If no questions are left in the quiz, all variables have value <c>null</c>.
         /// </summary>
-        /// <returns>Question, Answer alternative 1, Answer alternative 2, Answer alternative 3,
-        /// Answer alternative 4</returns>
-        public (string q, string a1, string a2, string a3, string a4) GetNextQuestion()
+        public (string q, List<string> answerAlternatives) GetNextQuestion()
         {
             currentQuestionId++;
 
             if (currentQuestionId >= quiz.GetLength(0))
             {
-                return (null, null, null, null, null);
+                return (null, null);
             }
-            return (quiz[currentQuestionId, 0], quiz[currentQuestionId, 1], quiz[currentQuestionId, 2], quiz[currentQuestionId, 3], quiz[currentQuestionId, 4]);
+            return (quiz[currentQuestionId, 0],
+                new List<string> { quiz[currentQuestionId, 1], quiz[currentQuestionId, 2], quiz[currentQuestionId, 3], quiz[currentQuestionId, 4] });
         }
 
         /// <summary>
@@ -65,7 +64,7 @@ namespace QuizMaster
             {
                 userAnswers.Add(userAnswer);
             }
-            else if (currentQuestionId > userAnswers.Count)
+            else if (currentQuestionId < 0 || currentQuestionId > userAnswers.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(currentQuestionId), "Index is out of bounds");
             }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -6,8 +7,9 @@ namespace QuizMaster
 {
     public partial class Form1 : Form
     {
-        Quiz quiz = new Quiz();
-        string tempUserAnswer = ""; // TODO: move to quiz class?
+        private Quiz quiz = new Quiz();
+        private string tempUserAnswer = ""; // TODO: move to quiz class?
+        private string[] altButtonNames = { "option1", "option2", "option3", "option4" };
 
         public Form1()
         {
@@ -27,13 +29,15 @@ namespace QuizMaster
             title.Font = new Font("Microsoft Sans Serif", 20);
 
             // create buttons for quiz
-            AddQuizButton("option1", new Point(150, 200), Answer_Click);
-            AddQuizButton("option2", new Point(450, 200), Answer_Click);
-            AddQuizButton("option3", new Point(150, 300), Answer_Click);
-            AddQuizButton("option4", new Point(450, 300), Answer_Click);
+            int xStart = 150;
+            int yStart = 200;
+            for (int i = 0; i < altButtonNames.Length; i++)
+            {
+                AddQuizButton(altButtonNames[i], new Point(xStart + ((i%2)*300), yStart + (i/2)*100), Answer_Click);
+            }
             AddQuizButton("next", new Point(500,400), Next_Click);
 
-            // fill quiz with first question
+            // load question
             LoadNextQuizPage();
         }
 
@@ -93,14 +97,15 @@ namespace QuizMaster
         /// </summary>
         private void LoadNextQuizPage()
         {
-            (string q, string a1, string a2, string a3, string a4) = quiz.GetNextQuestion();
+            (string q, List<string> answerAlternatives) = quiz.GetNextQuestion();
+
+            // First checks if there are any questions left. If not it loads final page
             if (q == null)
             {
-                // load final page
-                this.Controls.RemoveByKey("option1");
-                this.Controls.RemoveByKey("option2");
-                this.Controls.RemoveByKey("option3");
-                this.Controls.RemoveByKey("option4");
+                foreach (string buttonName in altButtonNames)
+                {
+                    this.Controls.RemoveByKey(buttonName);
+                }
                 this.Controls.RemoveByKey("next");
 
                 title.Text = "Congratulations, you completed the quiz!";
@@ -117,17 +122,15 @@ namespace QuizMaster
 
                 // TODO: add "replay" button?
             }
+            // Otherwise it loads the next quiz question with alternatives
             else
             {
                 title.Text = q;
-                Button op1 = (Button)this.Controls["option1"];
-                op1.Text = a1;
-                Button op2 = (Button)this.Controls["option2"];
-                op2.Text = a2;
-                Button op3 = (Button)this.Controls["option3"];
-                op3.Text = a3;
-                Button op4 = (Button)this.Controls["option4"];
-                op4.Text = a4;
+                for (int i = 0; i < altButtonNames.Length; i++)
+                {
+                    Button b = (Button)this.Controls[altButtonNames[i]];
+                    b.Text = answerAlternatives[i];
+                }
             }
         }
     }
